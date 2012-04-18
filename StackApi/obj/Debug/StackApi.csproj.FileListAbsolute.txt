@@ -1,0 +1,8 @@
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\bin\Debug\StackApi.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\bin\Debug\StackApi.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\bin\Debug\Newtonsoft.Json.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\bin\Debug\Newtonsoft.Json.xml
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\obj\Debug\StackApi.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\StackApi\obj\Debug\StackApi.pdb

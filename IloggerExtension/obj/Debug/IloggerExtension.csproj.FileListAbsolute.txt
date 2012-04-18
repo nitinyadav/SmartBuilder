@@ -1,0 +1,26 @@
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\bin\Debug\IloggerExtension.dll
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\bin\Debug\IloggerExtension.pdb
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\IloggerExtension.dll
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\IloggerExtension.pdb
+E:\Enlistments\LCS\developer\t-nitiny\LWALoggingService\IloggerExtension\bin\Debug\MS.Test.Infra.LyncLoggerDataTypes.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\bin\Debug\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\bin\Debug\IloggerExtension.pdb
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Debug\IloggerExtension.pdb
+E:\visual studio\10-6\t-nitiny\LWALoggingService-2\IloggerExtension\bin\Debug\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService-2\IloggerExtension\bin\Debug\IloggerExtension.pdb
+E:\visual studio\10-6\t-nitiny\LWALoggingService-2\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+E:\visual studio\10-6\t-nitiny\LWALoggingService-2\IloggerExtension\obj\Debug\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService-2\IloggerExtension\obj\Debug\IloggerExtension.pdb
+G:\16-6\LWALoggingService-2\IloggerExtension\bin\Debug\IloggerExtension.dll
+G:\16-6\LWALoggingService-2\IloggerExtension\bin\Debug\IloggerExtension.pdb
+G:\16-6\LWALoggingService-2\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+G:\16-6\LWALoggingService-2\IloggerExtension\obj\Debug\IloggerExtension.dll
+G:\16-6\LWALoggingService-2\IloggerExtension\obj\Debug\IloggerExtension.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\bin\Debug\IloggerExtension.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\bin\Debug\IloggerExtension.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\IloggerExtension.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\IloggerExtension.pdb

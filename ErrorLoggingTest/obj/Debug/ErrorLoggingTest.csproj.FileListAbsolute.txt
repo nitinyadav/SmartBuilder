@@ -1,0 +1,13 @@
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\ErrorLoggingTest.dll.config
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\ErrorLoggingTest.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\ErrorLoggingTest.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\Newtonsoft.Json.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\StackApi.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\StackApi.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\Newtonsoft.Json.xml
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\obj\Debug\ErrorLoggingTest.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\obj\Debug\ErrorLoggingTest.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\SearchEngine.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\ErrorLoggingTest\bin\Debug\SearchEngine.pdb

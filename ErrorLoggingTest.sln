@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLoggingTest", "ErrorLoggingTest\ErrorLoggingTest.csproj", "{5B578B52-AEAA-4266-8832-E45E4E863BD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackApi", "StackApi\StackApi.csproj", "{BCAA7FFD-C848-4BFF-9589-12FC0CB101E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IloggerExtension", "IloggerExtension\IloggerExtension.csproj", "{D473902A-30E9-4805-B208-E6B02B003EF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchEngine", "SearchEngine\SearchEngine.csproj", "{C595DFD6-5D01-4A26-BC81-A30B0567E345}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B578B52-AEAA-4266-8832-E45E4E863BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B578B52-AEAA-4266-8832-E45E4E863BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B578B52-AEAA-4266-8832-E45E4E863BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B578B52-AEAA-4266-8832-E45E4E863BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCAA7FFD-C848-4BFF-9589-12FC0CB101E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCAA7FFD-C848-4BFF-9589-12FC0CB101E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCAA7FFD-C848-4BFF-9589-12FC0CB101E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCAA7FFD-C848-4BFF-9589-12FC0CB101E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D473902A-30E9-4805-B208-E6B02B003EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D473902A-30E9-4805-B208-E6B02B003EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D473902A-30E9-4805-B208-E6B02B003EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D473902A-30E9-4805-B208-E6B02B003EF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C595DFD6-5D01-4A26-BC81-A30B0567E345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C595DFD6-5D01-4A26-BC81-A30B0567E345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C595DFD6-5D01-4A26-BC81-A30B0567E345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C595DFD6-5D01-4A26-BC81-A30B0567E345}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

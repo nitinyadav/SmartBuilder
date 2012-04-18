@@ -1,0 +1,5 @@
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Release\ResolveAssemblyReference.cache
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\bin\Release\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\bin\Release\IloggerExtension.pdb
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Release\IloggerExtension.dll
+E:\visual studio\10-6\t-nitiny\LWALoggingService\IloggerExtension\obj\Release\IloggerExtension.pdb
