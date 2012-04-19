@@ -24,3 +24,8 @@ C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExt
 C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\IloggerExtension.dll
 C:\Users\spark\Documents\Visual Studio 2010\Projects\ErrorLoggingTest\IloggerExtension\obj\Debug\IloggerExtension.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\SmartBuilder\IloggerExtension\bin\Debug\IloggerExtension.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\SmartBuilder\IloggerExtension\bin\Debug\IloggerExtension.pdb
+C:\Users\spark\Documents\Visual Studio 2010\Projects\SmartBuilder\IloggerExtension\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\spark\Documents\Visual Studio 2010\Projects\SmartBuilder\IloggerExtension\obj\Debug\IloggerExtension.dll
+C:\Users\spark\Documents\Visual Studio 2010\Projects\SmartBuilder\IloggerExtension\obj\Debug\IloggerExtension.pdb

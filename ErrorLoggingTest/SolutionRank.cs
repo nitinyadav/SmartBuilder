@@ -18,7 +18,7 @@ namespace ErrorLoggingTest
         /// <param name="rObj">The root object</param>
         /// <param name="errorMsg">error message string</param>
         /// <returns></returns>
-        public static RootObject sortAnswers(RootObject rObj, string errorMsg)
+        public static RootObject sortOnlineAnswers(RootObject rObj, string errorMsg)
         {
             Hashtable ht = new Hashtable();
             char[] separator = new char[] { ' ', ',', '.', ':', ';','-'};
@@ -104,6 +104,13 @@ namespace ErrorLoggingTest
                         error.Remove(current);
             }
             return error;
+        }
+
+        public static responseInfo[] sortDBResults(bugData input, responseInfo[] suggestions)
+        {
+            //suggestions[0].
+            //input.
+            return suggestions;
         }
     }
 }

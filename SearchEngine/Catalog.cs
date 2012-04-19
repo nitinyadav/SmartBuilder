@@ -22,11 +22,11 @@ namespace SearchEngine
         public Catalog()
         {
             index = new System.Collections.Hashtable();
-            string path = "orm.txt";
+            string path = "temp.txt";
             // This text is added only once to the file.
             if (File.Exists(path))
             {
-                System.IO.StreamReader file = new System.IO.StreamReader("orm.txt");
+                System.IO.StreamReader file = new System.IO.StreamReader(path);
                 string line = "";
                 string[] temp = new string[2] { "", "" };
                 while ((line = file.ReadLine()) != null)
@@ -39,14 +39,14 @@ namespace SearchEngine
                 }
                 file.Close();
             }
-            
+
         }
 
         ~Catalog()
         {
-            writer Writer = new writer("orm.txt");
-            Writer.write(this.ToString());
-            Writer.close();
+            StreamWriter sr = new StreamWriter("temp.txt");
+            sr.Write(this.ToString());
+            sr.Close();
         }
 
         /// <summary>
@@ -70,15 +70,19 @@ namespace SearchEngine
 
         /// <summary>Returns all the Files which contain the searchWord</summary>
         /// <returns>Hashtable </returns>
-        public Hashtable Search(string searchWord)
+        public Hashtable Search(string searchString)
         {
             // apply the same 'trim' as when we're building the catalog
-            searchWord = searchWord.Trim('?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
+            searchString = searchString.Trim('?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
             Hashtable retval = null;
-            if (index.ContainsKey(searchWord))
+            string[] searchWords = searchString.Split(new char[] { ' ', });
+            foreach (string searchWord in searchWords)
             {
-                Word thematch = (Word)index[searchWord];
-                retval = thematch.InBugId(); // return the collection of File objects
+                if (index.ContainsKey(searchWord))
+                {
+                    Word thematch = (Word)index[searchWord];
+                    retval = thematch.InBugId(); // return the collection of File objects
+                }
             }
             return retval;
         }
@@ -86,8 +90,8 @@ namespace SearchEngine
         /// <summary>Debug string</summary>
         public override string ToString()
         {
-            string temp= "";
-            foreach (object w in index.Keys) temp += ((Word)w).ToString();	// output ALL words, will take a long time
+            string temp = "";
+            foreach (object w in index.Keys) temp += ((Word)index[w]).ToString();	// output ALL words, will take a long time
             return temp;
         }
     }
@@ -127,7 +131,7 @@ namespace SearchEngine
         public override string ToString()
         {
             string temp = "";
-            foreach (object tempFile in BugCollection.Values) temp += Text+":"+((Bug)tempFile).ToString()+"\n";
+            foreach (object tempFile in BugCollection.Keys) temp += Text + ":" + tempFile + "\n";
             return temp;
         }
     }
@@ -138,7 +142,7 @@ namespace SearchEngine
     public class Bug
     {
         public string BugId;
-        
+
         /// <summary>Constructor requires all File attributes</summary>
         public Bug(string bugId)
         {

@@ -146,7 +146,8 @@ namespace StackApi
             sr.WriteLine(ComposeUri(requestUri));
             request.Method = WebRequestMethods.Http.Get;
             request.Accept = "application/json";
-            //request.Proxy = new WebProxy("http://127.0.0.1:8080/", true);
+            //ICredentials cred = new NetworkCredential("296820","nitin123nitin");
+            //request.Proxy = new WebProxy("http://10.1.1.19:80/", true,null,cred);
             var json = ExtractJsonResponse(request.GetResponse());
             sr.WriteLine(json);
             sr.Close();

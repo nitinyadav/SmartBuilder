@@ -17,11 +17,11 @@ namespace ErrorLoggingTest
     public class Service1 : IService1
     {
         logger log;
-        Catalog my_catalog;
+        public static Catalog my_catalog= new Catalog();
 
         public Service1()
         {
-            my_catalog = new Catalog();
+            //my_catalog = new Catalog();
         }
 
         public clientInfo GetUserDetail(string userId)
@@ -81,15 +81,50 @@ namespace ErrorLoggingTest
                         result = "";
                     }
 
-                    /*foreach (object rows in output)
+                    //saves 100 result instances and applies the similarity metrics on these
+                    int resCount = 0;
+                    string[] bId = new string[100];
+                    foreach (object rows in output.Keys)
                     {
-                        string bId = (string)((DictionaryEntry)rows).Value;
-                    }*/
-                    // total results = searchResultsArray.Count
+                        bId[resCount] = (string)output[rows];
+                        if (bId[resCount].Contains(':'))
+                        {
+                            string[] temp = bId[resCount].Split(':');
+                            foreach (string s in temp)
+                            {
+                                bId[resCount] = s;
+                                resCount++;
+                                if (resCount > 100)
+                                    break;
+                            }
+                        }
+                        resCount++;
+                        if (resCount > 100)
+                            break;
+                    }
+                    responseInfo[] suggestions = new responseInfo[resCount];
+                    for (int f = 0; f < resCount; f++)
+                    {
+                        suggestions[f] = this.extractRowSQL(bId[f]);
+                    }
+                    
+                    //rank results
+                    suggestions = SolutionRank.sortDBResults(input,suggestions);
+                    //return suggestions[0];
 
-                    //extract object from sql with bugId as bid
-                    string bugID = (string)((DictionaryEntry)output[0]).Value;
-                    return this.extractRowSQL(bugID);
+                    //TESTING
+                    //extract first object from sql with highest rank
+                    string bugID="";
+                    foreach (object o in output.Keys)
+                    {
+                        bugID = (string)output[o];
+                        if (bugID.Contains(':'))
+                        {
+                            bugID.Remove(bugID.IndexOf(':'));
+                        }
+                        return this.extractRowSQL(bugID);
+                    }
+                    return null;
                 }
                 else
                 {
@@ -100,7 +135,7 @@ namespace ErrorLoggingTest
                     func.rootObject.bugId = input.BugId;
                     
                     //sort the answers based on the question similarity
-                    func.rootObject = SolutionRank.sortAnswers(func.rootObject, input.ErrorMessage);
+                    func.rootObject = SolutionRank.sortOnlineAnswers(func.rootObject, input.ErrorMessage);
 
                     log.logAnswer(func.rootObject);
                     //no of solutions proposed
@@ -168,17 +203,15 @@ namespace ErrorLoggingTest
             
             //bugId can be added to the search engine
             Regex r = new Regex(@"\s+");           // remove all whitespace
-            string wordsOnly = r.Replace(ans.Question, " "); // compress all whitespace to one space
+            string wordsOnly = r.Replace(ans.ErrorMessage, " "); // compress all whitespace to one space
             string[] wordsOnlyA = wordsOnly.Split(' ');
 
             // Loop through words in string
-            int i = 0;
             string key = "";
             foreach (string word in wordsOnlyA)
             {
                 key = word.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
                 my_catalog.Add(key, bugId);
-                i++;
             }
         }
 
@@ -204,27 +237,27 @@ namespace ErrorLoggingTest
 
             if (answer.Length>1)
             {
-                sqlQuery += "answer";
+                sqlQuery += ",answer";
                 sqlData += "','"+answer;
             }
             if (userId.Length > 1)
             {
-                sqlQuery += "userId";
+                sqlQuery += ",userId";
                 sqlData += "','" + userId;
             }
             if (filename.Length > 1)
             {
-                sqlQuery += "filename";
+                sqlQuery += ",filename";
                 sqlData += "','" + filename;
             }
             if (stacktrace.Length > 1)
             {
-                sqlQuery += "stacktrace";
+                sqlQuery += ",stacktrace";
                 sqlData += "','" + stacktrace;
             }
-            if (vote !=null)
+            if (vote >= 0 )
             {
-                sqlQuery += "votes";
+                sqlQuery += ",votes";
                 sqlData += "','" + vote;
             }
             //mycommand.CommandText = @"INSERT INTO bugdata (question, answer,filename,info) "
@@ -234,7 +267,7 @@ namespace ErrorLoggingTest
             mycommand.ExecuteNonQuery();
 
             MySqlDataReader Reader;
-            command.CommandText = @"select BugId from bugdata where question ='" + question + "'";
+            command.CommandText = "select BugId from bugdata where question ='" + errorMsg + "'";
             Reader = command.ExecuteReader();
             string bugId = "";
             while (Reader.Read())
