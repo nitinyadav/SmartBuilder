@@ -28,6 +28,7 @@ namespace ErrorLoggingTest
             bugId = "bug1";
             userId = "user1";
             error = "file not found";
+            question = "";
         }
 
         public responseInfo(bugData input)

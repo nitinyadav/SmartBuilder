@@ -120,7 +120,8 @@ namespace ErrorLoggingTest
                         bugID = (string)output[o];
                         if (bugID.Contains(':'))
                         {
-                            bugID.Remove(bugID.IndexOf(':'));
+                            int pos = bugID.IndexOf(':');
+                            bugID = bugID.Substring(0,pos);
                         }
                         return this.extractRowSQL(bugID);
                     }
@@ -199,7 +200,8 @@ namespace ErrorLoggingTest
         public void updateAnswer(correctAnswer ans)
         {
             //add to the databse from the user
-            string bugId = writeAnswertoSQL(ans);
+            string bId = writeAnswertoSQL(ans);
+            string[] bugId =bId.Split(':');
             
             //bugId can be added to the search engine
             Regex r = new Regex(@"\s+");           // remove all whitespace
@@ -210,8 +212,14 @@ namespace ErrorLoggingTest
             string key = "";
             foreach (string word in wordsOnlyA)
             {
-                key = word.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
-                my_catalog.Add(key, bugId);
+                foreach (string s in bugId)
+                {
+                    if (s.Length > 0)
+                    {
+                        key = word.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
+                        my_catalog.Add(key, s);
+                    }
+                }
             }
         }
 
@@ -272,7 +280,7 @@ namespace ErrorLoggingTest
             string bugId = "";
             while (Reader.Read())
             {
-                bugId += Reader.GetValue(0).ToString();
+                bugId += Reader.GetValue(0).ToString()+":";
             }
             connection.Close();
             return bugId;
@@ -280,6 +288,8 @@ namespace ErrorLoggingTest
 
         responseInfo extractRowSQL(string bugId)
         {
+            if (bugId == null)
+                return null;
             responseInfo ans = new responseInfo();
 
             string MyConString = "SERVER=localhost;DATABASE=test;UID=root;PASSWORD=nitin;";
@@ -290,15 +300,18 @@ namespace ErrorLoggingTest
             connection.Open();
             
             MySqlDataReader Reader;
-            command.CommandText = @"select * from bugdata where BugId ='" + bugId + "'";
+            command.CommandText = "Select Question, Answer, BugId, UserId, Votes from bugdata where BugId =" + bugId + "";
             Reader = command.ExecuteReader();
             if(Reader.Read())
             {
-                ans.Question = Reader["Question"].ToString();
-                ans.Solution[0] = Reader["Answer"].ToString();
-                ans.BugId = Reader["BugId"].ToString();
-                ans.UserId = Reader["UserId"].ToString();
-                ans.Vote[0] = int.Parse(Reader["Votes"].ToString());
+                ans.Question = Reader[0].ToString();
+                ans.Solution= new string[1];
+                ans.Solution[0] = Reader[1].ToString();
+                //int bid = Reader.GetInt32(2);
+                //ans.BugId = bid.ToString();
+                //ans.UserId = Reader[3].ToString();
+                //ans.Vote = new int[1];
+                //ans.Vote[0] = Reader.GetInt32(4);
             }
             connection.Close();
             
