@@ -10,6 +10,7 @@ using MySql.Data.MySqlClient;
 using SearchEngine;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Collections.Specialized;
 
 namespace ErrorLoggingTest
 {
@@ -18,11 +19,7 @@ namespace ErrorLoggingTest
     {
         logger log;
         public static Catalog my_catalog= new Catalog();
-
-        public Service1()
-        {
-            //my_catalog = new Catalog();
-        }
+        public static int MAX_RESULTS = 10;
 
         public clientInfo GetUserDetail(string userId)
         {
@@ -52,17 +49,86 @@ namespace ErrorLoggingTest
 
                 //SEARCH: search local DB
                 string searchterm = input.ErrorMessage;
-                searchterm = searchterm.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
-                Hashtable searchResultsArray = my_catalog.Search(searchterm);
 
-                SortedList output;
-                if (null != searchResultsArray)
+                string [] searchTermA = null;
+    
+                Regex r = new Regex(@"\s+");            //remove all whitespace
+                searchterm = r.Replace(searchterm, " ");// to a single space
+                searchTermA = searchterm.Split(' ');// then split
+                for (int i = 0; i < searchTermA.Length; i++) {
+                    searchTermA[i] = searchTermA[i].Trim(' ', '?','\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
+                }
+    
+                // Array of arrays of results that match ONE of the search criteria
+				Hashtable[] searchResultsArrayArray = new Hashtable[searchTermA.Length];
+				// finalResultsArray is populated with pages that *match* ALL the search criteria
+				Hashtable finalResultsArray = new Hashtable();
+				    
+                bool botherToFindMatches = true;
+				int indexOfShortestResultSet = -1, lengthOfShortestResultSet = -1;
+    
+                for (int i = 0; i < searchTermA.Length; i++) {
+                    searchResultsArrayArray[i] = my_catalog.Search (searchTermA[i].ToString());
+                    if (null == searchResultsArrayArray[i]) {
+                        //botherToFindMatches = false;
+                    } else {
+                        int resultsInThisSet = searchResultsArrayArray[i].Count;
+                        if ( (lengthOfShortestResultSet == -1) || (lengthOfShortestResultSet > resultsInThisSet) ) {
+                            indexOfShortestResultSet  = i;
+                            lengthOfShortestResultSet = resultsInThisSet;
+                        }
+                    }
+                }
+                
+                // Find the common files from the array of arrays of documents
+                // matching ONE of the criteria
+                if (botherToFindMatches) {
+                    int c = indexOfShortestResultSet;                               // loop through the *shortest* resultset
+                    Hashtable searchResultsArray = searchResultsArrayArray[c];
+    
+                    if (null != searchResultsArray)
+                    foreach (object foundInFile in searchResultsArray) {            // for each file in the *shortest* result set
+                        DictionaryEntry fo = (DictionaryEntry)foundInFile;          // find matching files in the other resultsets
+    
+                        int matchcount=0, totalcount=0, weight=0;
+    
+                        for (int cx = 0; cx < searchResultsArrayArray.Length; cx++) {
+                            totalcount+=(cx+1);                                // keep track, so we can compare at the end (if term is in ALL resultsets)
+                            if (cx == c) {                                     // current resultset
+                                matchcount += (cx+1);                          // implicitly matches in the current resultset
+                                weight += (int)fo.Value;                       // sum the weighting
+                            } else {
+                                Hashtable searchResultsArrayx = searchResultsArrayArray[cx];
+                                if (null != searchResultsArrayx)
+                                foreach (object foundInFilex in searchResultsArrayx) {        // for each file in the result set
+                                    DictionaryEntry fox = (DictionaryEntry)foundInFilex;
+                                    if (fo.Key.ToString() == fox.Key.ToString()) {                                  // see if it matches
+                                        matchcount += (cx+1);                  // and if it matches, track the matchcount
+                                        weight += (int)fox.Value;               // and weighting; then break out of loop, since
+                                        break;                                 // no need to keep looking through this resultset
+                                    }
+                                } // foreach
+                            } // if
+                        } // for
+                        if ( (matchcount>0) && (matchcount == totalcount) ) { // was matched in each Array
+                            // we build the finalResults here, to pass to the formatting code below
+                            // - we could do the formatting here, but it would mix up the 'result generation'
+                            // and display code too much
+                            fo.Value = weight; // set the 'weight' in the combined results to the sum of individual document matches
+                            if ( !finalResultsArray.Contains (fo.Key) ) finalResultsArray.Add ( fo.Key, fo.Value);
+                        } // if
+                    } // foreach
+                } // if
+
+                // Format the results
+                if (finalResultsArray.Count > 0)
                 {
-                    output = new SortedList(searchResultsArray.Count);
+                    SortedList output = new SortedList(finalResultsArray.Count);
                     DictionaryEntry fo;
                     string result = "";
                     string bugId = "";
-                    foreach (object foundInFile in searchResultsArray)
+
+                    foreach (object foundInFile in finalResultsArray)
                     {
                         fo = (DictionaryEntry)foundInFile;
                         bugId = (String)fo.Key;
@@ -72,7 +138,7 @@ namespace ErrorLoggingTest
                         int sortrank = (rank * -1);
                         if (output.Contains(sortrank))
                         {
-                            output[sortrank] = ((string)output[sortrank]) +":"+ result;
+                            output[sortrank] = ((string)output[sortrank]) + ":" + result;
                         }
                         else
                         {
@@ -80,8 +146,38 @@ namespace ErrorLoggingTest
                         }
                         result = "";
                     }
+                //}
 
-                    //saves 100 result instances and applies the similarity metrics on these
+                //searchterm = searchterm.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
+                //Hashtable searchResultsArray = my_catalog.Search(searchterm);
+
+                //SortedList output;
+                //if (null != searchResultsArray)
+                //{
+                    //output = new SortedList(searchResultsArray.Count);
+                    //DictionaryEntry fo;
+                    //string result = "";
+                    //string bugId = "";
+                    //foreach (object foundInFile in searchResultsArray)
+                    //{
+                    //    fo = (DictionaryEntry)foundInFile;
+                    //    bugId = (String)fo.Key;
+                    //    int rank = (int)fo.Value;
+                    //    result = bugId;
+                    //    //extract info from bugId
+                    //    int sortrank = (rank * -1);
+                    //    if (output.Contains(sortrank))
+                    //    {
+                    //        output[sortrank] = ((string)output[sortrank]) +":"+ result;
+                    //    }
+                    //    else
+                    //    {
+                    //        output.Add(sortrank, result);
+                    //    }
+                    //    result = "";
+                    //}
+
+                    //saves 10 result instances and applies the similarity metrics on these
                     int resCount = 0;
                     string[] bId = new string[100];
                     foreach (object rows in output.Keys)
@@ -94,27 +190,30 @@ namespace ErrorLoggingTest
                             {
                                 bId[resCount] = s;
                                 resCount++;
-                                if (resCount > 100)
+                                if (resCount >= MAX_RESULTS)
                                     break;
                             }
                         }
-                        resCount++;
-                        if (resCount > 100)
+                        else
+                        {
+                            resCount++;
+                        }
+                        if (resCount >= MAX_RESULTS)
                             break;
                     }
-                    responseInfo[] suggestions = new responseInfo[resCount];
+                    suggestAnswer[] suggestions = new suggestAnswer[resCount];
                     for (int f = 0; f < resCount; f++)
                     {
                         suggestions[f] = this.extractRowSQL(bId[f]);
                     }
                     
                     //rank results
-                    suggestions = SolutionRank.sortDBResults(input,suggestions);
-                    //return suggestions[0];
+                    responseInfo response = SolutionRank.sortDBResults(input,suggestions);
+                    return response;
 
                     //TESTING
                     //extract first object from sql with highest rank
-                    string bugID="";
+                    /*string bugID="";
                     foreach (object o in output.Keys)
                     {
                         bugID = (string)output[o];
@@ -125,7 +224,7 @@ namespace ErrorLoggingTest
                         }
                         return this.extractRowSQL(bugID);
                     }
-                    return null;
+                    return null;*/
                 }
                 else
                 {
@@ -197,11 +296,11 @@ namespace ErrorLoggingTest
             }
         }
 
-        public void updateAnswer(correctAnswer ans)
+        public void updateAnswer(suggestAnswer ans)
         {
             //add to the databse from the user
             string bId = writeAnswertoSQL(ans);
-            string[] bugId =bId.Split(':');
+            string[] bugId = bId.Split(':');
             
             //bugId can be added to the search engine
             Regex r = new Regex(@"\s+");           // remove all whitespace
@@ -223,21 +322,27 @@ namespace ErrorLoggingTest
             }
         }
 
-        string writeAnswertoSQL(correctAnswer ans)
+        string writeAnswertoSQL(suggestAnswer ans)
         {
             string MyConString = "SERVER=localhost;DATABASE=test;UID=root;PASSWORD=nitin;";
             MySqlConnection connection = new MySqlConnection(MyConString);
             MySqlCommand command = connection.CreateCommand();
 
             MySqlCommand mycommand = connection.CreateCommand();
-            string question = ans.Question;
             string errorMsg = ans.ErrorMessage;
             string answer = ans.Answer;
             string userId = ans.UserId;
-            int vote = ans.Vote;
+            int votes = ans.Vote;
             string filename = ans.Filename;
-            string info = ans.Info;
             string stacktrace = ans.Stacktrace;
+            string nameSpace = ans.NameSpace;
+            string os = ans.Os;
+            string softwareName = ans.SoftwareName;
+            string tags = ans.Tags;
+            string guid = ans.Guid;
+            string version = ans.Version;
+            string info = ans.Info;
+            string vendor = ans.Vendor;
 
             string sqlQuery = "INSERT INTO bugdata (question";
             string sqlData = ") "+ "Values ('" + errorMsg ;
@@ -263,13 +368,52 @@ namespace ErrorLoggingTest
                 sqlQuery += ",stacktrace";
                 sqlData += "','" + stacktrace;
             }
-            if (vote >= 0 )
+            if (votes >= 0 )
             {
                 sqlQuery += ",votes";
-                sqlData += "','" + vote;
+                sqlData += "','" + votes;
             }
-            //mycommand.CommandText = @"INSERT INTO bugdata (question, answer,filename,info) "
-            //                    + "Values ('" + question + "','" + answer + "','" + filename + "','" + info + "')";
+            if (nameSpace.Length > 1)
+            {
+                sqlQuery += ",namespace";
+                sqlData += "','" + nameSpace;
+            }
+            if (os.Length > 1)
+            {
+                sqlQuery += ",os";
+                sqlData += "','" + os;
+            }
+            if (softwareName.Length > 1)
+            {
+                sqlQuery += ",softwareName";
+                sqlData += "','" + softwareName;
+            }
+            if (tags.Length > 1)
+            {
+                sqlQuery += ",tags";
+                sqlData += "','" + tags;
+            }
+            if (guid.Length > 1)
+            {
+                sqlQuery += ",guid";
+                sqlData += "','" + guid;
+            }
+            if (version.Length > 1)
+            {
+                sqlQuery += ",version";
+                sqlData += "','" + version;
+            }
+            if (info.Length > 1)
+            {
+                sqlQuery += ",info";
+                sqlData += "','" + info;
+            }
+            if (vendor.Length > 1)
+            {
+                sqlQuery += ",vendor";
+                sqlData += "','" + vendor;
+            }
+            
             mycommand.CommandText = sqlQuery + sqlData + sqlEnd;
             connection.Open();
             mycommand.ExecuteNonQuery();
@@ -286,11 +430,11 @@ namespace ErrorLoggingTest
             return bugId;
         }
 
-        responseInfo extractRowSQL(string bugId)
+        suggestAnswer extractRowSQL(string bugId)
         {
             if (bugId == null)
                 return null;
-            responseInfo ans = new responseInfo();
+            suggestAnswer ans = new suggestAnswer();
 
             string MyConString = "SERVER=localhost;DATABASE=test;UID=root;PASSWORD=nitin;";
             MySqlConnection connection = new MySqlConnection(MyConString);
@@ -300,18 +444,24 @@ namespace ErrorLoggingTest
             connection.Open();
             
             MySqlDataReader Reader;
-            command.CommandText = "Select Question, Answer, BugId, UserId, Votes from bugdata where BugId =" + bugId + "";
+            command.CommandText = "Select Question, Answer, BugId, UserId, Votes, stacktrace, Namespace, os, tags, software, guid, version, info, vendor from bugdata where BugId =" + bugId + "";
             Reader = command.ExecuteReader();
             if(Reader.Read())
             {
-                ans.Question = Reader[0].ToString();
-                ans.Solution= new string[1];
-                ans.Solution[0] = Reader[1].ToString();
-                //int bid = Reader.GetInt32(2);
-                //ans.BugId = bid.ToString();
-                //ans.UserId = Reader[3].ToString();
-                //ans.Vote = new int[1];
-                //ans.Vote[0] = Reader.GetInt32(4);
+                ans.ErrorMessage = Reader[0].ToString();
+                ans.Answer = Reader[1].ToString();
+                ans.BugId = Reader.GetInt32(2);
+                ans.UserId = Reader[3].ToString();
+                ans.Vote = Reader.GetInt32(4);
+                ans.Stacktrace = Reader[5].ToString();
+                ans.NameSpace = Reader[6].ToString();
+                ans.Os = Reader[7].ToString();
+                ans.Tags = Reader[8].ToString();
+                ans.SoftwareName = Reader[9].ToString();
+                ans.Guid = Reader[10].ToString();
+                ans.Version = Reader[11].ToString();
+                ans.Info = Reader[12].ToString();
+                ans.Vendor = Reader[13].ToString();
             }
             connection.Close();
             

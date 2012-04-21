@@ -22,7 +22,7 @@ namespace ErrorLoggingTest
 
         [OperationContract]
         [WebGet(UriTemplate = "/UpdateAnswer", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        void updateAnswer(correctAnswer response);
+        void updateAnswer(suggestAnswer response);
 
     }
 }

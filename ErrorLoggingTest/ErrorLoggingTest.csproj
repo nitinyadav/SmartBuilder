@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="bugData.cs" />
     <Compile Include="clientInfo.cs" />
-    <Compile Include="correctAnswer.cs" />
+    <Compile Include="suggestAnswer.cs" />
     <Compile Include="IService1.cs" />
     <Compile Include="logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

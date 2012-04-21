@@ -1,10 +1,5 @@
 to:4
-to:6
 divide:4
-divide:6
 attempted:4
-attempted:6
 zero:4
-zero:6
 by:4
-by:6

@@ -104,7 +104,7 @@ namespace StackApi
             return answerResponse;
         }
 
-        public string similar(string searchString, string[] tags)
+        public string similar(string searchString, string tags)
         {
             StringBuilder parameter = new StringBuilder("/similar?answers=true&body=true&title=");
             StringBuilder searchText = new StringBuilder(searchString);
@@ -113,7 +113,8 @@ namespace StackApi
             if (tags.Length != 0)
             {
                 parameter.Append("&tagged=");
-                foreach (string s in tags)
+                string[] tag = tags.Split(',');
+                foreach (string s in tag)
                 {
                     if (parameter[parameter.Length-1].Equals('='))
                         parameter.Append(Uri.EscapeDataString(s));

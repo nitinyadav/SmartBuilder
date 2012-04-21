@@ -25,7 +25,7 @@ namespace ErrorLoggingTest
         string guid;
         string nameSpace;
         string token;
-        string[] tags;
+        string tags;
         string operatingSystem;
 
         [DataMember]
@@ -113,7 +113,7 @@ namespace ErrorLoggingTest
         }
 
         [DataMember]
-        public string[] Tags
+        public string Tags
         {
             get { return tags; }
             set { tags = value; }

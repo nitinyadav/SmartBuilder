@@ -106,11 +106,37 @@ namespace ErrorLoggingTest
             return error;
         }
 
-        public static responseInfo[] sortDBResults(bugData input, responseInfo[] suggestions)
+        /// <summary>
+        /// Rank the suggestions on similarity with the input
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="suggestions"></param>
+        /// <returns></returns>
+        public static responseInfo sortDBResults(bugData input, suggestAnswer[] suggestions)
         {
-            //suggestions[0].
-            //input.
-            return suggestions;
+            int[] rank = new int[suggestions.Length];
+            int sugCount = 0;
+            foreach (suggestAnswer ans in suggestions)
+            {
+                //input.ErrorMessage and res.Error
+                //res.UserId and input.UserId
+                //input.Filename and ans.Filename
+                //input.NameSpace and ans.NameSpace
+                //input.StackTrace and ans.Stacktrace
+                //input.SoftwareName and ans.SoftwareName
+                //input.Version and ans.Version
+                //input.SoftwareInfo amd ans.Info
+                //input.Tags and ans.Tags
+                //input.Vendor and ans.Vendor
+                //input.OperatingSystem and ans.Os;
+                //input.Guid and ans.Guid
+
+                sugCount++;
+            }
+
+            responseInfo res = new responseInfo();
+            //make res from suggestions[0] after ranking
+            return res;
         }
     }
 }
