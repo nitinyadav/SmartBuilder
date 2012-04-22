@@ -146,37 +146,7 @@ namespace ErrorLoggingTest
                         }
                         result = "";
                     }
-                //}
-
-                //searchterm = searchterm.Trim(' ', '?', '\"', ',', '\'', ';', ':', '.', '(', ')').ToLower();
-                //Hashtable searchResultsArray = my_catalog.Search(searchterm);
-
-                //SortedList output;
-                //if (null != searchResultsArray)
-                //{
-                    //output = new SortedList(searchResultsArray.Count);
-                    //DictionaryEntry fo;
-                    //string result = "";
-                    //string bugId = "";
-                    //foreach (object foundInFile in searchResultsArray)
-                    //{
-                    //    fo = (DictionaryEntry)foundInFile;
-                    //    bugId = (String)fo.Key;
-                    //    int rank = (int)fo.Value;
-                    //    result = bugId;
-                    //    //extract info from bugId
-                    //    int sortrank = (rank * -1);
-                    //    if (output.Contains(sortrank))
-                    //    {
-                    //        output[sortrank] = ((string)output[sortrank]) +":"+ result;
-                    //    }
-                    //    else
-                    //    {
-                    //        output.Add(sortrank, result);
-                    //    }
-                    //    result = "";
-                    //}
-
+                
                     //saves 10 result instances and applies the similarity metrics on these
                     int resCount = 0;
                     string[] bId = new string[100];
@@ -210,21 +180,6 @@ namespace ErrorLoggingTest
                     //rank results
                     responseInfo response = SolutionRank.sortDBResults(input,suggestions);
                     return response;
-
-                    //TESTING
-                    //extract first object from sql with highest rank
-                    /*string bugID="";
-                    foreach (object o in output.Keys)
-                    {
-                        bugID = (string)output[o];
-                        if (bugID.Contains(':'))
-                        {
-                            int pos = bugID.IndexOf(':');
-                            bugID = bugID.Substring(0,pos);
-                        }
-                        return this.extractRowSQL(bugID);
-                    }
-                    return null;*/
                 }
                 else
                 {
@@ -320,6 +275,34 @@ namespace ErrorLoggingTest
                     }
                 }
             }
+        }
+
+        public void voteAnswer(suggestAnswer response)
+        {
+            //add to the databse from the user
+            if (response == null)
+                return;
+            
+            string MyConString = "SERVER=localhost;DATABASE=test;UID=root;PASSWORD=nitin;";
+            MySqlConnection connection = new MySqlConnection(MyConString);
+            MySqlCommand command = connection.CreateCommand();
+
+            connection.Open();
+            int votes = 0;
+
+            MySqlDataReader Reader;
+            command.CommandText = "Select votes from bugdata where question ='" + response.ErrorMessage + "' and answer = '"+response.Answer+"'";
+            Reader = command.ExecuteReader();
+            if (Reader.Read())
+            {
+                votes = Reader.GetInt32(0);
+            }
+            votes++;
+            Reader.Close();
+            MySqlCommand command2 = connection.CreateCommand();
+            command2.CommandText = "UPDATE bugdata SET votes = "+votes+" where question ='"+response.ErrorMessage+"' and answer = '"+response.Answer+"'";
+            command2.ExecuteNonQuery();
+            connection.Close();
         }
 
         string writeAnswertoSQL(suggestAnswer ans)

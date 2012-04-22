@@ -24,5 +24,9 @@ namespace ErrorLoggingTest
         [WebGet(UriTemplate = "/UpdateAnswer", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         void updateAnswer(suggestAnswer response);
 
+        [OperationContract]
+        [WebGet(UriTemplate = "/VoteAnswer", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        void voteAnswer(suggestAnswer response);
+
     }
 }
