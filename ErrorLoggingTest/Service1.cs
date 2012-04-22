@@ -385,7 +385,7 @@ namespace ErrorLoggingTest
             }
             if (softwareName.Length > 1)
             {
-                sqlQuery += ",softwareName";
+                sqlQuery += ",software";
                 sqlData += "','" + softwareName;
             }
             if (tags.Length > 1)

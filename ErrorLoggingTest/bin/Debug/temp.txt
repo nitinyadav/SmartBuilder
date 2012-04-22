@@ -1,5 +1,10 @@
 to:4
+to:5
 divide:4
+divide:5
 attempted:4
+attempted:5
 zero:4
+zero:5
 by:4
+by:5

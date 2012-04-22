@@ -114,29 +114,91 @@ namespace ErrorLoggingTest
         /// <returns></returns>
         public static responseInfo sortDBResults(bugData input, suggestAnswer[] suggestions)
         {
-            int[] rank = new int[suggestions.Length];
+            double[] rank = new double[suggestions.Length];
             int sugCount = 0;
+            //int answerPosition = -1;
+            //double lowestRank = -1;
             foreach (suggestAnswer ans in suggestions)
             {
-                //input.ErrorMessage and res.Error
-                //res.UserId and input.UserId
-                //input.Filename and ans.Filename
-                //input.NameSpace and ans.NameSpace
-                //input.StackTrace and ans.Stacktrace
-                //input.SoftwareName and ans.SoftwareName
-                //input.Version and ans.Version
-                //input.SoftwareInfo amd ans.Info
-                //input.Tags and ans.Tags
-                //input.Vendor and ans.Vendor
-                //input.OperatingSystem and ans.Os;
-                //input.Guid and ans.Guid
+                rank[sugCount] = 0;
+                rank[sugCount] += cosineSimilarity.CosineIDFSimilarity(input.ErrorMessage, ans.ErrorMessage);
+                if ((input.StackTrace != null) && (ans.Stacktrace != null))
+                    rank[sugCount] += cosineSimilarity.CosineIDFSimilarity(input.StackTrace, ans.Stacktrace);
+                if ((input.Tags != null) && (ans.Tags != null))
+                    rank[sugCount] += cosineSimilarity.CosineSimilarity(input.Tags, ans.Tags);
+                if ((input.SoftwareInfo != null) && (ans.Info != null))
+                    rank[sugCount] += cosineSimilarity.CosineSimilarity(input.SoftwareInfo,ans.Info);
 
+                if ((input.Filename != null) && (ans.Filename != null))
+                    if(input.Filename.Equals(ans.Filename))
+                        rank[sugCount] += 1;
+                if ((input.NameSpace != null) && (ans.NameSpace != null))
+                    if(input.NameSpace.Equals(ans.NameSpace))
+                        rank[sugCount] += 1;
+                if ((input.SoftwareName != null) && (ans.SoftwareName != null))
+                    if(input.SoftwareName.Equals(ans.SoftwareName))
+                        rank[sugCount] += 1;
+                if ((input.Version != null) && (ans.Version != null))
+                    if(input.Version.Equals(ans.Version))
+                        rank[sugCount] += 1;
+                if ((input.Vendor != null) && (ans.Vendor != null))
+                    if(input.Vendor.Equals(ans.Vendor))
+                        rank[sugCount] += 1;
+                if ((input.OperatingSystem != null) && (ans.Os != null))
+                    if(input.OperatingSystem.Equals(ans.Os))
+                        rank[sugCount] += 1;
+                if ((input.Guid != null) && (ans.Guid != null))
+                    if(input.Guid.Equals(ans.Guid))
+                        rank[sugCount] += 1;
+                //if ((lowestRank == -1) || (rank[sugCount] > lowestRank))
+                //{
+                //    lowestRank = rank[sugCount];
+                //    answerPosition = sugCount;
+                //}
                 sugCount++;
             }
-
+            sortSuggestions(rank,suggestions);
             responseInfo res = new responseInfo();
-            //make res from suggestions[0] after ranking
+            //make res from suggestions[answerPosition]
+            res.Error = suggestions[0].ErrorMessage;
+            res.Question = suggestions[0].ErrorMessage;
+            res.UserId = suggestions[0].UserId;
+            int totalAns = (suggestions.Length > 3) ? 3 : suggestions.Length;
+            res.Solution = new string[totalAns];
+            res.Vote = new int[totalAns];
+            for (int u = 0; u < totalAns; u++)
+            {
+                res.Solution[u] = suggestions[u].Answer;
+                res.Vote[u] = suggestions[u].Vote;
+            }
             return res;
+        }
+
+        /// <summary>
+        /// Sorting based on rank
+        /// </summary>
+        /// <param name="rank"></param>
+        /// <param name="qObj"></param>
+        public static void sortSuggestions(double[] rank, suggestAnswer[] sAns)
+        {
+            double element;
+            int ic;
+            suggestAnswer tmp = new suggestAnswer();
+
+            for (int loopvar = 1; loopvar < rank.Length; loopvar++)
+            {
+                element = rank[loopvar];
+                tmp = sAns[loopvar];
+                ic = loopvar - 1;
+                while (ic >= 0 && rank[ic] < element)
+                {
+                    rank[ic + 1] = rank[ic];    //move all elements
+                    sAns[ic + 1] = sAns[ic];
+                    ic--;
+                }
+                rank[ic + 1] = element;    //Insert element            
+                sAns[ic + 1] = tmp;
+            }
         }
     }
 }

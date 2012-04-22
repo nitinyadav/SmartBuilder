@@ -25,9 +25,9 @@ namespace ErrorLoggingTest
         
         public responseInfo()
         {
-            bugId = "bug1";
-            userId = "user1";
-            error = "file not found";
+            bugId = "";
+            userId = "";
+            error = "";
             question = "";
         }
 
