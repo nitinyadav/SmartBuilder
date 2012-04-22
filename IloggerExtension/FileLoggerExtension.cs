@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Security.Principal;
 
-namespace Microsoft.UCG.Test.LWA
+namespace Logger
 {
     //The FileLogger class logs the data into a log file
     public class FileLoggerExtension : IloggerExtension

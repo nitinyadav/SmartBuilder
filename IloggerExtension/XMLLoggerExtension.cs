@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Principal;
 using System.Collections.Generic;
 
-namespace Microsoft.UCG.Test.LWA
+namespace Logger
 {
 
     public class XMLLoggerExtension : IloggerExtension

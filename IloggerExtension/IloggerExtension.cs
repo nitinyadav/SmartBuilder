@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace Microsoft.UCG.Test.LWA
+namespace Logger
 {
     /// <summary>
     /// The IloggerInterface presents an interface to process the logData.

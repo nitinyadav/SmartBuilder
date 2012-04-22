@@ -5,7 +5,7 @@ using System.Text;
 using System.Security.Principal;
 using System.IO;
 
-namespace Microsoft.UCG.Test.LWA
+namespace Logger
 {
     class FileWriter
     {
